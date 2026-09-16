@@ -202,10 +202,3 @@ class ScientificNotationInteger:
 
         self.Normalize()
         return
-
-n1 = ScientificNotationInteger(5, 5.23456789)
-n2 = ScientificNotationInteger(7, 8.6)
-
-print(n1.Abbreviate(), n2.Abbreviate())
-n1.Add(n2)
-print(n1.toString(), n1.Abbreviate())
