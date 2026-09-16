@@ -60,14 +60,6 @@ function ScientificNotation.new(exponent: number, mantissa: number)
 	return self
 end
 
-function metatable:GetMantissa()
-	return self.mantissa
-end
-
-function metatable:GetExponent()
-	return self.exponent
-end
-
 function metatable:Abbreviate()
 	self:Normalize()
 	local num = self.mantissa * (10 ^ (self.exponent % 3))
