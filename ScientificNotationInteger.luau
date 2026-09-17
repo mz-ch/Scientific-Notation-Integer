@@ -6,7 +6,7 @@ const DISPLAYED_PRECISION = 3 -- Number of decimal places displayed in the Abbre
 const ABBREVIATIONS = {"", "K", "M", "B", "T", "Qa", "Qi","Sx", "Sp","O", "N", "Dc", "Udc", "Ddc", "Tdc", "Qadc", "Qidc", "Sxdc", "Spdc", "Ocdc", "Nmdc", "Vg", "Uvg", "Dvg", "Tvg", "Qavg", "Qivg", "Sxvg", "Spvg", "Ovg", "Nvg", "Tg", "Utg", "Dtg", "Ttg", "Qatg", "Qitg", "Sxtg", "Sptg", "Octg", "Notg", "Qd"}
 
 
-local function numberToScientificNotation(num: number)
+local function numberToScientificNotation(num: number) : ScientificNotation
 	if typeof(num) ~= "number" then
 		error(`{num} is invalid type`)
 		return
@@ -38,9 +38,33 @@ local function numberToScientificNotation(num: number)
 	return result
 end
 
+export type ScientificNotation = setmetatable<{
+	exponent: number,
+	mantissa: number,
+	
+	new: typeof(
+		-- Creates new ScientificNotation object
+		function(a: number?, b: number?): ScientificNotation
+		end
+	),
+	
+	Abbreviate: typeof(
+		-- Returns an abbreviated string of the number representation
+		function(self: ScientificNotation): string
+		end
+	),
+	
+	Normalize: typeof(
+		-- Normalizes the current object in-place
+		function(self: ScientificNotation): ()
+		end
+	),
+	
+}, typeof(ScientificNotation)>
+
 
 function ScientificNotation.new(exponent: number, mantissa: number)
-	local self = {}
+	local self = {} :: ScientificNotation
 	setmetatable(self, metatable)
 	
 	if not mantissa or typeof(mantissa) ~= "number" then
@@ -60,7 +84,7 @@ function ScientificNotation.new(exponent: number, mantissa: number)
 	return self
 end
 
-function metatable:Abbreviate()
+function metatable:Abbreviate() : string
 	self:Normalize()
 	local num = self.mantissa * (10 ^ (self.exponent % 3))
 	num = math.floor(num * (10 ^ DISPLAYED_PRECISION)) / (10 ^ DISPLAYED_PRECISION)
@@ -68,7 +92,7 @@ function metatable:Abbreviate()
 		local abbreviation = ABBREVIATIONS[(self.exponent // 3) + 1]
 		return num.. abbreviation
 	else
-		return `{math.round(self.mantissa * DISPLAYED_PRECISION) / DISPLAYED_PRECISION} * 10^{self.exponent}`
+		return `{math.floor(self.mantissa * DISPLAYED_PRECISION) / DISPLAYED_PRECISION} * 10^{self.exponent}`
 	end
 end
 
@@ -95,7 +119,7 @@ function metatable:Normalize()
 	self.mantissa *= sign
 end
 
-metatable.__tostring = function(self)
+metatable.__tostring = function(self) : string
 	if self.exponent == 0 then
 		return "0.0"
 	end
@@ -128,7 +152,7 @@ metatable.__tostring = function(self)
 	return `{newString} * 10^{self.exponent}`
 end
 
-metatable.__gt = function(num1, num2)
+metatable.__gt = function(num1, num2) : boolean
 	local SN1 = num1
 	local SN2 = num2
 	
@@ -158,7 +182,7 @@ metatable.__gt = function(num1, num2)
 	return SN1.mantissa > SN2.mantissa
 end
 
-metatable.__lt = function(num1, num2)
+metatable.__lt = function(num1, num2) : boolean
 	local SN1 = num1
 	local SN2 = num2
 
@@ -188,7 +212,7 @@ metatable.__lt = function(num1, num2)
 	return SN1.mantissa < SN2.mantissa
 end
 
-metatable.__eq = function(num1, num2)
+metatable.__eq = function(num1, num2) : boolean
 	local SN1 = num1
 	local SN2 = num2
 
@@ -212,7 +236,7 @@ metatable.__eq = function(num1, num2)
 	return SN1.mantissa == SN2.mantissa and SN1.exponent == SN2.exponent
 end
 
-metatable.__add = function(num1, num2)
+metatable.__add = function(num1, num2) : ScientificNotation
 	local SN1 = num1
 	local SN2 = num2
 
@@ -249,7 +273,7 @@ metatable.__add = function(num1, num2)
 	return sumSN
 end
 
-metatable.__sub = function(num1, num2)
+metatable.__sub = function(num1, num2) : ScientificNotation
 	local SN1 = num1
 	local SN2 = num2
 
@@ -295,7 +319,7 @@ metatable.__sub = function(num1, num2)
 	return differenceSN
 end
 
-metatable.__mul = function(num1, num2)
+metatable.__mul = function(num1, num2) : ScientificNotation
 	local SN1 = num1
 	local SN2 = num2
 
@@ -324,7 +348,7 @@ metatable.__mul = function(num1, num2)
 	return productSN
 end
 
-metatable.__div = function(num1, num2)
+metatable.__div = function(num1, num2) : ScientificNotation
 	local SN1 = num1
 	local SN2 = num2
 
