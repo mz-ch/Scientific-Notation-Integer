@@ -2,8 +2,8 @@ local ScientificNotation = {}
 local metatable = {}
 metatable.__index = metatable
 
-local DISPLAYED_PRECISION = 3 -- Number of decimal places displayed in the Abbreviate() method
-local ABBREVIATIONS = {"", "K", "M", "B", "T", "Qa", "Qi","Sx", "Sp","O", "N", "Dc", "Udc", "Ddc", "Tdc", "Qadc", "Qidc", "Sxdc", "Spdc", "Ocdc", "Nmdc", "Vg", "Uvg", "Dvg", "Tvg", "Qavg", "Qivg", "Sxvg", "Spvg", "Ovg", "Nvg", "Tg", "Utg", "Dtg", "Ttg", "Qatg", "Qitg", "Sxtg", "Sptg", "Octg", "Notg", "Qd"}
+const DISPLAYED_PRECISION = 3 -- Number of decimal places displayed in the Abbreviate() method
+const ABBREVIATIONS = {"", "K", "M", "B", "T", "Qa", "Qi","Sx", "Sp","O", "N", "Dc", "Udc", "Ddc", "Tdc", "Qadc", "Qidc", "Sxdc", "Spdc", "Ocdc", "Nmdc", "Vg", "Uvg", "Dvg", "Tvg", "Qavg", "Qivg", "Sxvg", "Spvg", "Ovg", "Nvg", "Tg", "Utg", "Dtg", "Ttg", "Qatg", "Qitg", "Sxtg", "Sptg", "Octg", "Notg", "Qd"}
 
 
 local function numberToScientificNotation(num: number)
