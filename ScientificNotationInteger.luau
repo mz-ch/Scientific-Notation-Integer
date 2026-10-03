@@ -124,32 +124,7 @@ metatable.__tostring = function(self) : string
 		return "0.0"
 	end
 
-	local mantissaString = tostring(self.mantissa)
-	local decimalPointIndex = string.find(mantissaString, ".")
-	local newString = string.sub(mantissaString, 0, decimalPointIndex) .. string.sub(mantissaString, decimalPointIndex + 2, -1)
-
-	if self.exponent >= 0 then
-		if self.exponent >= #mantissaString then
-
-			for i = 1, self.exponent - #mantissaString, 1 do
-				newString ..= "0"
-			end
-
-		else
-			newString = string.sub(newString, self.exponent, -1) .. "." .. string.sub(mantissaString, self.exponent + 1, -1)
-		end
-
-	else
-		local decimalPlaces = ""
-
-		for i = 1, -self.exponent, 1 do
-			decimalPlaces..= "0"
-		end
-
-		newString = decimalPlaces .. "." .. newString
-	end	
-
-	return `{newString} * 10^{self.exponent}`
+	return `{self.mantissa} * 10^{self.exponent}`
 end
 
 metatable.__gt = function(num1, num2) : boolean
