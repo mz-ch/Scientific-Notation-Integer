@@ -12,7 +12,7 @@ local function numberToScientificNotation(num: number) : ScientificNotation
 		return
 	end
 	
-	local result = metatable.new()
+	local result = ScientificNotation.new()
 	local sign = 1
 	
 	if num < 0 then
@@ -84,6 +84,16 @@ function ScientificNotation.new(exponent: number, mantissa: number)
 	return self
 end
 
+function metatable:Serialize() : buffer
+	self:Normalize()
+
+	local objectBuffer = buffer.create(12)
+	buffer.writei32(objectBuffer, 0, self.exponent) -- 4 bytes
+	buffer.writef64(objectBuffer, 4, self.mantissa) -- 8 bytes
+
+	return objectBuffer
+end
+
 function metatable:Abbreviate() : string
 	self:Normalize()
 	local num = self.mantissa * (10 ^ (self.exponent % 3))
@@ -134,14 +144,14 @@ metatable.__gt = function(num1, num2) : boolean
 	
 	if type(num1) == "number" then
 		SN1 = numberToScientificNotation(num1)
-	elseif typeof(num1) ~= "table" or num1.__type ~= "ScientificNotation" then
+	elseif typeof(num1) ~= "table" or num1["__type"] == nil or num1.__type ~= "ScientificNotation" then
 		error(`{num1} is invalid type`)
 		return false
 	end
 	
 	if type(num2) == "number" then
-		SN1 = numberToScientificNotation(num2)
-	elseif typeof(num2) ~= "table" or num2.__type ~= "ScientificNotation" then
+		SN2 = numberToScientificNotation(num2)
+	elseif typeof(num2) ~= "table" or num2["__type"] == nil or num2.__type ~= "ScientificNotation" then
 		error(`{num2} is invalid type`)
 		return false
 	end
@@ -164,14 +174,14 @@ metatable.__lt = function(num1, num2) : boolean
 
 	if type(num1) == "number" then
 		SN1 = numberToScientificNotation(num1)
-	elseif typeof(num1) ~= "table" or num1.__type ~= "ScientificNotation" then
+	elseif typeof(num1) ~= "table" or num1["__type"] == nil or num1.__type ~= "ScientificNotation" then
 		error(`{num1} is invalid type`)
 		return false
 	end
 
 	if type(num2) == "number" then
-		SN1 = numberToScientificNotation(num2)
-	elseif typeof(num2) ~= "table" or num2.__type ~= "ScientificNotation" then
+		SN2 = numberToScientificNotation(num2)
+	elseif typeof(num2) ~= "table" or num2["__type"] == nil or num2.__type ~= "ScientificNotation" then
 		error(`{num2} is invalid type`)
 		return false
 	end
@@ -194,14 +204,14 @@ metatable.__eq = function(num1, num2) : boolean
 
 	if type(num1) == "number" then
 		SN1 = numberToScientificNotation(num1)
-	elseif typeof(num1) ~= "table" or num1.__type ~= "ScientificNotation" then
+	elseif typeof(num1) ~= "table" or num1["__type"] == nil or num1.__type ~= "ScientificNotation" then
 		error(`{num1} is invalid type`)
 		return false
 	end
 
 	if type(num2) == "number" then
-		SN1 = numberToScientificNotation(num2)
-	elseif typeof(num2) ~= "table" or num2.__type ~= "ScientificNotation" then
+		SN2 = numberToScientificNotation(num2)
+	elseif typeof(num2) ~= "table" or num2["__type"] == nil or num2.__type ~= "ScientificNotation" then
 		error(`{num2} is invalid type`)
 		return false
 	end
@@ -218,14 +228,14 @@ metatable.__add = function(num1, num2) : ScientificNotation
 
 	if type(num1) == "number" then
 		SN1 = numberToScientificNotation(num1)
-	elseif typeof(num1) ~= "table" or num1.__type ~= "ScientificNotation" then
+	elseif typeof(num1) ~= "table" or num1["__type"] == nil or num1.__type ~= "ScientificNotation" then
 		error(`{num1} is invalid type`)
 		return false
 	end
 
 	if type(num2) == "number" then
-		SN1 = numberToScientificNotation(num2)
-	elseif typeof(num2) ~= "table" or num2.__type ~= "ScientificNotation" then
+		SN2 = numberToScientificNotation(num2)
+	elseif typeof(num2) ~= "table" or num2["__type"] == nil or num2.__type ~= "ScientificNotation" then
 		error(`{num2} is invalid type`)
 		return false
 	end
@@ -255,14 +265,14 @@ metatable.__sub = function(num1, num2) : ScientificNotation
 
 	if type(num1) == "number" then
 		SN1 = numberToScientificNotation(num1)
-	elseif typeof(num1) ~= "table" or num1.__type ~= "ScientificNotation" then
+	elseif typeof(num1) ~= "table" or num1["__type"] == nil or num1.__type ~= "ScientificNotation" then
 		error(`{num1} is invalid type`)
 		return false
 	end
 
 	if type(num2) == "number" then
-		SN1 = numberToScientificNotation(num2)
-	elseif typeof(num2) ~= "table" or num2.__type ~= "ScientificNotation" then
+		SN2 = numberToScientificNotation(num2)
+	elseif typeof(num2) ~= "table" or num2["__type"] == nil or num2.__type ~= "ScientificNotation" then
 		error(`{num2} is invalid type`)
 		return false
 	end
@@ -301,14 +311,14 @@ metatable.__mul = function(num1, num2) : ScientificNotation
 
 	if type(num1) == "number" then
 		SN1 = numberToScientificNotation(num1)
-	elseif typeof(num1) ~= "table" or num1.__type ~= "ScientificNotation" then
+	elseif typeof(num1) ~= "table" or num1["__type"] == nil or num1.__type ~= "ScientificNotation" then
 		error(`{num1} is invalid type`)
 		return false
 	end
 
 	if type(num2) == "number" then
-		SN1 = numberToScientificNotation(num2)
-	elseif typeof(num2) ~= "table" or num2.__type ~= "ScientificNotation" then
+		SN2 = numberToScientificNotation(num2)
+	elseif typeof(num2) ~= "table" or num2["__type"] == nil or num2.__type ~= "ScientificNotation" then
 		error(`{num2} is invalid type`)
 		return false
 	end
@@ -330,14 +340,14 @@ metatable.__div = function(num1, num2) : ScientificNotation
 
 	if type(num1) == "number" then
 		SN1 = numberToScientificNotation(num1)
-	elseif typeof(num1) ~= "table" or num1.__type ~= "ScientificNotation" then
+	elseif typeof(num1) ~= "table" or num1["__type"] == nil or num1.__type ~= "ScientificNotation" then
 		error(`{num1} is invalid type`)
 		return false
 	end
 
 	if type(num2) == "number" then
-		SN1 = numberToScientificNotation(num2)
-	elseif typeof(num2) ~= "table" or num2.__type ~= "ScientificNotation" then
+		SN2 = numberToScientificNotation(num2)
+	elseif typeof(num2) ~= "table" or num2["__type"] == nil or num2.__type ~= "ScientificNotation" then
 		error(`{num2} is invalid type`)
 		return false
 	end
