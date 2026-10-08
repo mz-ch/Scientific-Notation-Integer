@@ -113,6 +113,7 @@ class ScientificNotationInteger:
 
         if self.mantissa == 0:
             self.exponent = 0
+            return
         elif self.mantissa < 0:
             self.mantissa *= -1
             sign = -1
