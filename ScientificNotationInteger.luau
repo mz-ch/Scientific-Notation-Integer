@@ -96,13 +96,14 @@ end
 
 function metatable:Abbreviate() : string
 	self:Normalize()
+
 	local num = self.mantissa * (10 ^ (self.exponent % 3))
-	num = math.floor(num * (10 ^ DISPLAYED_PRECISION)) / (10 ^ DISPLAYED_PRECISION)
+	
 	if self.exponent >= 0 then
 		local abbreviation = ABBREVIATIONS[(self.exponent // 3) + 1]
-		return num.. abbreviation
+		return string.format(`%.{DISPLAYED_PRECISION}f {abbreviation}`, num)
 	else
-		return `{math.floor(self.mantissa * DISPLAYED_PRECISION) / DISPLAYED_PRECISION} * 10^{self.exponent}`
+		return string.format(`%.{DISPLAYED_PRECISION}f *10^{self.exponent}`, num)
 	end
 end
 
