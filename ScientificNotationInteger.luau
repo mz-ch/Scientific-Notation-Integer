@@ -131,7 +131,7 @@ function metatable:Normalize()
 end
 
 metatable.__tostring = function(self) : string
-	if self.exponent == 0 then
+	if self.mantissa == 0 then
 		return "0.0"
 	end
 
