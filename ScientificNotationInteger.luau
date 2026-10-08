@@ -101,6 +101,7 @@ function metatable:Normalize()
 
 	if self.mantissa == 0 then
 		self.exponent = 0
+		return
 	elseif self.mantissa < 0 then
 		self.mantissa *= -1
 		sign = -1
