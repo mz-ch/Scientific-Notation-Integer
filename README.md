@@ -21,6 +21,20 @@ Because the exponent is tracked separately, this can represent arbitrarily large
 (or small) magnitudes without overflowing — limited only by floating-point
 precision on the mantissa (~15–17 significant digits).
 
+## Complexity
+
+All operations run in **O(1) time and O(1) space**. Values are fixed-size
+(mantissa + exponent), so arithmetic, comparison, and serialization never scale
+with the magnitude of the number — unlike bigint approaches whose cost grows with
+digit count.
+
+> Caveat: `Normalize()` (used internally by most methods) corrects the mantissa
+> with a loop of multiply/divide-by-10 steps, so strictly it is O(k) where `k` is
+> the number of digits the mantissa sits outside `[1, 10)`. Because inputs are kept
+> normalized, `k` stays tiny in practice, making it effectively constant. For a
+> strict guarantee, replace those loops with a single `log10`/`floor` adjustment.
+
+
 ## Abbreviations
 
 `Abbreviate()` formats a number with a named suffix, stepping every three orders
