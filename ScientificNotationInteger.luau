@@ -357,7 +357,7 @@ metatable.__div = function(num1, num2) : ScientificNotation
 	SN2:Normalize()
 	local quotientSN = ScientificNotation.new()
 	
-	sumSN.mantissa = SN1.mantissa / SN2.mantissa
+	quotientSN.mantissa = SN1.mantissa / SN2.mantissa
 	quotientSN.exponent = SN1.exponent - SN2.exponent
 	
 	quotientSN:Normalize()
