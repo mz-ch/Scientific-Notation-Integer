@@ -3,7 +3,7 @@
 A lightweight scientific-notation number type that represents values far beyond the
 safe range of native integers, using a **mantissa** and an **exponent**
 (`mantissa × 10^exponent`). Useful for incremental/idle games, big counters,
-and anywhere numbers grow past `Number.MAX_SAFE_INTEGER`.
+and anywhere numbers grow past `Number.MAX_SAFE_INTEGER`. It supports arbitrarily large/small magnitudes, along with negative numbers.
 
 Two parallel implementations are provided:
 
