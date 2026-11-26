@@ -353,6 +353,10 @@ metatable.__div = function(num1, num2) : ScientificNotation
 		return false
 	end
 
+	if SN2.mantissa == 0.0 then
+		error("Cannot divide by zero")
+	end
+
 	SN1:Normalize()
 	SN2:Normalize()
 	local quotientSN = ScientificNotation.new()
