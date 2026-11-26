@@ -198,6 +198,10 @@ class ScientificNotationInteger:
             print("Invalid input type.")
             return
 
+        if num.mantissa == 0:
+            print("Cannot divide by zero")
+            return
+
         self.mantissa = self.mantissa / num.mantissa
         self.exponent = self.exponent - num.exponent
 
